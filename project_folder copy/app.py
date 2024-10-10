@@ -2,7 +2,6 @@ from flask import Flask, render_template
 import pandas as pd
 import qrcode
 import os
-from PIL import Image
 #welcome
 # يا اهلا بمن فتح بوابه الجحيم
 app = Flask(__name__)
@@ -10,21 +9,19 @@ app = Flask(__name__)
 # Excel تحميل بيانات الطلاب من ملف 
 def load_data():
     #you have here to get the path of the file from folders and put it in the ('')
-    df = pd.read_excel('/Users/mac/Library/Mobile Documents/com~apple~CloudDocs/college/uni/project_folder/students-data-3.xlsx')
+    #>>>>df = pd.read_excel('/Users/mac/Library/Mobile Documents/com~apple~CloudDocs/college/uni/Web-application/Web-application/project_folder/students_data 3.xlsx')
     df['national_id'] = df['national_id'].astype(str)
     return df.set_index('national_id')
 
 students_data = load_data()
 
 # QR Codes لجميع الطلاب
-
 def generate_all_qr_codes():
     for national_id in students_data.index:
         #ipشيل الكومنت الي تحتي لما تجيب ال 
         #>>>student_url = f'http://<put your raoter ip addres here use (ipconfig) in terminal for windos>:5000/student/{national_id}'
         #مثلا كدا
         #student_url = f'http://127.0.0.1:5000/student/{national_id}'
-        student_url = f'http://192.168.1.13:5000/student/{national_id}'
         img = qrcode.make(student_url)
         qr_path = f'qr_codes/{national_id}.png'
         img.save(qr_path)
